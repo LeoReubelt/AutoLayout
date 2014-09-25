@@ -10,6 +10,8 @@
 
 @implementation EPMessageCell
 
+#pragma mark - Lifecycle
+
 - (void)awakeFromNib
 {
 
@@ -18,7 +20,16 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
+    [self setupMessageLabel];
+}
 
+#pragma mark - Setup Views
+
+- (void)setupMessageLabel
+{
+    self.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    self.textLabel.numberOfLines = 0;
+    self.textLabel.font = [UIFont systemFontOfSize:16];
 }
 
 @end

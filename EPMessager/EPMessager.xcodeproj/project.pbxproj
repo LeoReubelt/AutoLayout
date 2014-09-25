@@ -14,6 +14,7 @@
 		717A74E919D44D940093AC8B /* EPMessagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 717A74E819D44D940093AC8B /* EPMessagerTests.m */; };
 		717A74F419D44E550093AC8B /* EPMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 717A74F319D44E550093AC8B /* EPMessageViewController.m */; };
 		717A74F719D44F000093AC8B /* EPMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 717A74F619D44F000093AC8B /* EPMessageCell.m */; };
+		717A74FA19D464220093AC8B /* NSString+EH.m in Sources */ = {isa = PBXBuildFile; fileRef = 717A74F919D464220093AC8B /* NSString+EH.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +42,8 @@
 		717A74F319D44E550093AC8B /* EPMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPMessageViewController.m; sourceTree = "<group>"; };
 		717A74F519D44F000093AC8B /* EPMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPMessageCell.h; sourceTree = "<group>"; };
 		717A74F619D44F000093AC8B /* EPMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPMessageCell.m; sourceTree = "<group>"; };
+		717A74F819D464220093AC8B /* NSString+EH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+EH.h"; sourceTree = "<group>"; };
+		717A74F919D464220093AC8B /* NSString+EH.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+EH.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +91,8 @@
 				717A74F319D44E550093AC8B /* EPMessageViewController.m */,
 				717A74F519D44F000093AC8B /* EPMessageCell.h */,
 				717A74F619D44F000093AC8B /* EPMessageCell.m */,
+				717A74F819D464220093AC8B /* NSString+EH.h */,
+				717A74F919D464220093AC8B /* NSString+EH.m */,
 				717A74D919D44D930093AC8B /* Images.xcassets */,
 				717A74DB19D44D940093AC8B /* LaunchScreen.xib */,
 				717A74CC19D44D930093AC8B /* Supporting Files */,
@@ -220,6 +225,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				717A74FA19D464220093AC8B /* NSString+EH.m in Sources */,
 				717A74F719D44F000093AC8B /* EPMessageCell.m in Sources */,
 				717A74D219D44D930093AC8B /* AppDelegate.m in Sources */,
 				717A74F419D44E550093AC8B /* EPMessageViewController.m in Sources */,
