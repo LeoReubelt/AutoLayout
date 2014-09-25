@@ -14,11 +14,12 @@
 @interface EPMessageViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UITextFieldDelegate>
 
 @property (weak, nonatomic) UITableView *tableView;
-@property (weak, nonatomic) UITextView *messageView;
+//@property (weak, nonatomic) UITextView *messageView;
 @property (weak, nonatomic) UITextField *messageField;
 @property (weak, nonatomic) UIButton *sendButton;
 @property (strong, nonatomic) NSMutableArray *messages;
 @property (strong, nonatomic) NSMutableDictionary *tableDictionary;
+@property (strong, nonatomic) NSLayoutConstraint *messageFieldHeight;
 
 @end
 
@@ -26,7 +27,7 @@
 
 @implementation EPMessageViewController
 
-NSInteger const EPMessageViewHeight = 100;
+NSInteger const EPMessageViewHeight = 50;
 NSInteger const EPSendButtonWidth = 100;
 
 - (void)viewDidLoad
@@ -39,10 +40,11 @@ NSInteger const EPSendButtonWidth = 100;
 {
     [super viewDidAppear:animated];
     [self setupTableView];
-    //[self setupMessageField];
-    //[self setupSendButton];
+    [self setupMessageField];
+    [self setupSendButton];
     [self setupAutoLayout];
     [self.tableView reloadData];
+    self.automaticallyAdjustsScrollViewInsets = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -127,99 +129,65 @@ NSInteger const EPSendButtonWidth = 100;
 - (void)setupAutoLayout
 {
     [self.view removeConstraints:self.view.constraints];
-    self.view.translatesAutoresizingMaskIntoConstraints = NO;
     for (UIView *view in self.view.subviews) {
         [view removeConstraints:view.constraints];
         view.translatesAutoresizingMaskIntoConstraints = NO;
     }
     
-//    NSLayoutConstraint *tvHeight =
-//    [NSLayoutConstraint constraintWithItem:self.tableView
-//                                 attribute:NSLayoutAttributeHeight
-//                                 relatedBy:NSLayoutRelationEqual
-//                                    toItem:self.view
-//                                 attribute:NSLayoutAttributeHeight
-//                                multiplier:1
-//                                  constant:0.0];
-//    
-//    [self.view addConstraint:tvHeight];
-//    
-//    NSLayoutConstraint *tvWidth =
-//    [NSLayoutConstraint constraintWithItem:self.tableView
-//                                 attribute:NSLayoutAttributeWidth
-//                                 relatedBy:NSLayoutRelationEqual
-//                                    toItem:self.view
-//                                 attribute:NSLayoutAttributeWidth
-//                                multiplier:1
-//                                  constant:0];
-//    
-//    [self.view addConstraint:tvWidth];
-//    
-//    NSLayoutConstraint *tvTop =
-//    [NSLayoutConstraint constraintWithItem:self.tableView
-//                                 attribute:NSLayoutAttributeTop
-//                                 relatedBy:NSLayoutRelationEqual
-//                                    toItem:self.view
-//                                 attribute:NSLayoutAttributeTop
-//                                multiplier:1
-//                                  constant:0.0];
-//    
-//    [self.view addConstraint:tvTop];
-//    
-//    NSLayoutConstraint *tvBot =
-//    [NSLayoutConstraint constraintWithItem:self.tableView
-//                                 attribute:NSLayoutAttributeBottom
-//                                 relatedBy:NSLayoutRelationEqual
-//                                    toItem:self.view
-//                                 attribute:NSLayoutAttributeBottom
-//                                multiplier:1
-//                                  constant:0.0];
-//    
-//    [self.view addConstraint:tvBot];
-//    
-//    NSLayoutConstraint *tvRight =
-//    [NSLayoutConstraint constraintWithItem:self.tableView
-//                                 attribute:NSLayoutAttributeRight
-//                                 relatedBy:NSLayoutRelationEqual
-//                                    toItem:self.view
-//                                 attribute:NSLayoutAttributeRight
-//                                multiplier:1
-//                                  constant:0.0];
-//    
-//    [self.view addConstraint:tvRight];
-//    
-//    NSLayoutConstraint *tvLeft =
-//    [NSLayoutConstraint constraintWithItem:self.tableView
-//                                 attribute:NSLayoutAttributeLeft
-//                                 relatedBy:NSLayoutRelationEqual
-//                                    toItem:self.view
-//                                 attribute:NSLayoutAttributeLeft
-//                                multiplier:1
-//                                  constant:0.0];
-//    
-//    [self.view addConstraint:tvLeft];
-//
-//    NSLayoutConstraint *tvWidth =
-//    [NSLayoutConstraint constraintWithItem:self.tableView
-//                                 attribute:NSLayoutAttributeWidth
-//                                 relatedBy:NSLayoutRelationEqual
-//                                    toItem:self.view
-//                                 attribute:NSLayoutAttributeWidth
-//                                multiplier:1
-//                                  constant:0.0];
-//    
-//    [self.view addConstraint:tvWidth];
-//    
-    NSDictionary *constraintViews = NSDictionaryOfVariableBindings(_tableView);
+    self.messageFieldHeight =
+    [NSLayoutConstraint constraintWithItem:self.messageField
+                                 attribute:NSLayoutAttributeHeight
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:nil
+                                 attribute:NSLayoutAttributeWidth
+                                multiplier:1
+                                  constant:EPMessageViewHeight];
     
-    NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-5-[_tableView]-5-|" options:0 metrics:nil views:constraintViews];
+    [self.view addConstraint:self.messageFieldHeight];
+    
+    NSLayoutConstraint *buttonWidth =
+    [NSLayoutConstraint constraintWithItem:self.sendButton
+                                 attribute:NSLayoutAttributeWidth
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:nil
+                                 attribute:NSLayoutAttributeWidth
+                                multiplier:1
+                                  constant:EPSendButtonWidth];
+    [self.view addConstraint:buttonWidth];
+    
+    NSLayoutConstraint *messageAndButtonHeights =
+    [NSLayoutConstraint constraintWithItem:self.messageField
+                                 attribute:NSLayoutAttributeHeight
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:self.sendButton
+                                 attribute:NSLayoutAttributeHeight
+                                multiplier:1
+                                  constant:0];
+    
+    [self.view addConstraint:messageAndButtonHeights];
+    
+    NSLayoutConstraint *messageAndButtonBottoms =
+    [NSLayoutConstraint constraintWithItem:self.messageField
+                                 attribute:NSLayoutAttributeBottom
+                                 relatedBy:NSLayoutRelationEqual
+                                    toItem:self.sendButton
+                                 attribute:NSLayoutAttributeBottom
+                                multiplier:1
+                                  constant:0];
+    
+    [self.view addConstraint:messageAndButtonBottoms];
+
+
+    NSDictionary *constraintViews = NSDictionaryOfVariableBindings(_tableView, _messageField, _sendButton);
+    
+    NSArray *messageAndButtonHorizontal = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_messageField][_sendButton]|" options:0 metrics:nil views:constraintViews];
+    [self.view addConstraints:messageAndButtonHorizontal];
+    
+    NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_tableView][_messageField]|" options:0 metrics:nil views:constraintViews];
     [self.view addConstraints:verticalConstraints];
     
-    NSArray *horizontalTableViewConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[_tableView]-5-|" options:0 metrics:nil views:constraintViews];
+    NSArray *horizontalTableViewConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_tableView]|" options:0 metrics:nil views:constraintViews];
     [self.view addConstraints:horizontalTableViewConstraints];
-//
-//    NSArray *horizontalTextViewConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_messageField][_sendButton]|" options:0 metrics:nil views:constraintViews];
-//    [self.view addConstraints:horizontalTextViewConstraints];
 }
 
 #pragma mark - TableViewDelegate
@@ -249,15 +217,15 @@ NSInteger const EPSendButtonWidth = 100;
 {
     NSDictionary *message = self.messages[indexPath.row];
     NSString *messageString = [message allKeys][0];
-    return [self heightForTextHavingWidth:CGRectGetWidth(self.messageView.frame) font:[UIFont systemFontOfSize:16] withMessage:messageString];
+    return [self heightForTextHavingWidth:CGRectGetWidth(self.messageField.frame) font:[UIFont systemFontOfSize:16] withMessage:messageString];
 }
 
 #pragma mark - IBActions
 
 -(IBAction)sendTapped:(id)sender
 {
-    if (self.messageView.text && ![self.messageView.text isEqualToString:@""]) {
-        [EPMessagingManager sendMessage:self.messageView.text];
+    if (self.messageField.text && ![self.messageField.text isEqualToString:@""]) {
+        [EPMessagingManager sendMessage:self.messageField.text];
     } else {
         UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Alert" message:@"Must Enter Message" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alertView show];
