@@ -14,7 +14,7 @@
 		717A74E919D44D940093AC8B /* EPMessagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 717A74E819D44D940093AC8B /* EPMessagerTests.m */; };
 		717A74F419D44E550093AC8B /* EPMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 717A74F319D44E550093AC8B /* EPMessageViewController.m */; };
 		717A74F719D44F000093AC8B /* EPMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 717A74F619D44F000093AC8B /* EPMessageCell.m */; };
-		717A74FA19D464220093AC8B /* NSString+EH.m in Sources */ = {isa = PBXBuildFile; fileRef = 717A74F919D464220093AC8B /* NSString+EH.m */; };
+		71FF128619D4689400C26236 /* EPMessagingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 71FF128519D4689400C26236 /* EPMessagingManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +44,8 @@
 		717A74F619D44F000093AC8B /* EPMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPMessageCell.m; sourceTree = "<group>"; };
 		717A74F819D464220093AC8B /* NSString+EH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+EH.h"; sourceTree = "<group>"; };
 		717A74F919D464220093AC8B /* NSString+EH.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+EH.m"; sourceTree = "<group>"; };
+		71FF128419D4689400C26236 /* EPMessagingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPMessagingManager.h; sourceTree = "<group>"; };
+		71FF128519D4689400C26236 /* EPMessagingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPMessagingManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,8 @@
 				717A74D119D44D930093AC8B /* AppDelegate.m */,
 				717A74F219D44E550093AC8B /* EPMessageViewController.h */,
 				717A74F319D44E550093AC8B /* EPMessageViewController.m */,
+				71FF128419D4689400C26236 /* EPMessagingManager.h */,
+				71FF128519D4689400C26236 /* EPMessagingManager.m */,
 				717A74F519D44F000093AC8B /* EPMessageCell.h */,
 				717A74F619D44F000093AC8B /* EPMessageCell.m */,
 				717A74F819D464220093AC8B /* NSString+EH.h */,
@@ -225,7 +229,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				717A74FA19D464220093AC8B /* NSString+EH.m in Sources */,
+				71FF128619D4689400C26236 /* EPMessagingManager.m in Sources */,
 				717A74F719D44F000093AC8B /* EPMessageCell.m in Sources */,
 				717A74D219D44D930093AC8B /* AppDelegate.m in Sources */,
 				717A74F419D44E550093AC8B /* EPMessageViewController.m in Sources */,
@@ -416,6 +420,7 @@
 				717A74EE19D44D940093AC8B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		717A74EF19D44D940093AC8B /* Build configuration list for PBXNativeTarget "EPMessagerTests" */ = {
 			isa = XCConfigurationList;
@@ -424,6 +429,7 @@
 				717A74F119D44D940093AC8B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
