@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  EPMessageViewController.h
 //  EPMessager
 //
 //  Created by Leo Reubelt on 9/25/14.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
+@interface EPMessageViewController : UIViewController
 
 @end
-

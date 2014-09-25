@@ -9,11 +9,11 @@
 /* Begin PBXBuildFile section */
 		717A74CF19D44D930093AC8B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 717A74CE19D44D930093AC8B /* main.m */; };
 		717A74D219D44D930093AC8B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 717A74D119D44D930093AC8B /* AppDelegate.m */; };
-		717A74D519D44D930093AC8B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 717A74D419D44D930093AC8B /* ViewController.m */; };
-		717A74D819D44D930093AC8B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 717A74D619D44D930093AC8B /* Main.storyboard */; };
 		717A74DA19D44D940093AC8B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 717A74D919D44D930093AC8B /* Images.xcassets */; };
 		717A74DD19D44D940093AC8B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 717A74DB19D44D940093AC8B /* LaunchScreen.xib */; };
 		717A74E919D44D940093AC8B /* EPMessagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 717A74E819D44D940093AC8B /* EPMessagerTests.m */; };
+		717A74F419D44E550093AC8B /* EPMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 717A74F319D44E550093AC8B /* EPMessageViewController.m */; };
+		717A74F719D44F000093AC8B /* EPMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 717A74F619D44F000093AC8B /* EPMessageCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,14 +32,15 @@
 		717A74CE19D44D930093AC8B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		717A74D019D44D930093AC8B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		717A74D119D44D930093AC8B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		717A74D319D44D930093AC8B /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		717A74D419D44D930093AC8B /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		717A74D719D44D930093AC8B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		717A74D919D44D930093AC8B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		717A74DC19D44D940093AC8B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		717A74E219D44D940093AC8B /* EPMessagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EPMessagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		717A74E719D44D940093AC8B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		717A74E819D44D940093AC8B /* EPMessagerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EPMessagerTests.m; sourceTree = "<group>"; };
+		717A74F219D44E550093AC8B /* EPMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPMessageViewController.h; sourceTree = "<group>"; };
+		717A74F319D44E550093AC8B /* EPMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPMessageViewController.m; sourceTree = "<group>"; };
+		717A74F519D44F000093AC8B /* EPMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPMessageCell.h; sourceTree = "<group>"; };
+		717A74F619D44F000093AC8B /* EPMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPMessageCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,9 +84,10 @@
 			children = (
 				717A74D019D44D930093AC8B /* AppDelegate.h */,
 				717A74D119D44D930093AC8B /* AppDelegate.m */,
-				717A74D319D44D930093AC8B /* ViewController.h */,
-				717A74D419D44D930093AC8B /* ViewController.m */,
-				717A74D619D44D930093AC8B /* Main.storyboard */,
+				717A74F219D44E550093AC8B /* EPMessageViewController.h */,
+				717A74F319D44E550093AC8B /* EPMessageViewController.m */,
+				717A74F519D44F000093AC8B /* EPMessageCell.h */,
+				717A74F619D44F000093AC8B /* EPMessageCell.m */,
 				717A74D919D44D930093AC8B /* Images.xcassets */,
 				717A74DB19D44D940093AC8B /* LaunchScreen.xib */,
 				717A74CC19D44D930093AC8B /* Supporting Files */,
@@ -199,7 +201,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				717A74D819D44D930093AC8B /* Main.storyboard in Resources */,
 				717A74DD19D44D940093AC8B /* LaunchScreen.xib in Resources */,
 				717A74DA19D44D940093AC8B /* Images.xcassets in Resources */,
 			);
@@ -219,8 +220,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				717A74D519D44D930093AC8B /* ViewController.m in Sources */,
+				717A74F719D44F000093AC8B /* EPMessageCell.m in Sources */,
 				717A74D219D44D930093AC8B /* AppDelegate.m in Sources */,
+				717A74F419D44E550093AC8B /* EPMessageViewController.m in Sources */,
 				717A74CF19D44D930093AC8B /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -244,14 +246,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		717A74D619D44D930093AC8B /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				717A74D719D44D930093AC8B /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		717A74DB19D44D940093AC8B /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -346,6 +340,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = EPMessager/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -356,6 +351,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = EPMessager/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

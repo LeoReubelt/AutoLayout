@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "EPMessageViewController.h"
 
 @interface AppDelegate ()
 
@@ -15,8 +16,15 @@
 @implementation AppDelegate
 
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.backgroundColor = [UIColor whiteColor];
+    EPMessageViewController *rootVC = [[EPMessageViewController alloc] init];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:rootVC];
+    self.window.rootViewController = navController;
+    [self.window makeKeyAndVisible];
+    
     return YES;
 }
 
