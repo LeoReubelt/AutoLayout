@@ -244,13 +244,12 @@ CGFloat const EPTextSize = 16.0;
 
 - (void)textFieldDidChange:(NSNotification *)notification
 {
-    NSDictionary *attributes = @{@"font":[UIFont systemFontOfSize:EPTextSize]};
-    CGSize stringSize = [self.messageView.text sizeWithAttributes:attributes];
-    NSInteger numberOfLines = ceilf(stringSize.width/self.messageView.textContainer.size.width);
-    self.messageFieldHeight.constant = numberOfLines*stringSize.height+10;
-//    
-//    self.messageFieldHeight.constant = [self heightForTextHavingWidth:self.messageView.textContainer.size.width-11 font:[UIFont systemFontOfSize:EPTextSize] withMessage:self.messageView.text];
-    NSLog(@"Line Height %f",self.messageFieldHeight.constant);
+//    NSDictionary *attributes = @{@"font":[UIFont systemFontOfSize:EPTextSize]};
+//    CGSize stringSize = [self.messageView.text sizeWithAttributes:nil];
+//    NSInteger numberOfLines = ceilf(stringSize.width/self.messageView.textContainer.size.width);
+//    self.messageFieldHeight.constant = numberOfLines*(stringSize.height+10);
+    
+    self.messageFieldHeight.constant = [self heightForTextHavingWidth:self.messageView.textContainer.size.width-11 font:[UIFont systemFontOfSize:EPTextSize] withMessage:self.messageView.text];
 }
 
 #pragma mark - TableViewDelegate
