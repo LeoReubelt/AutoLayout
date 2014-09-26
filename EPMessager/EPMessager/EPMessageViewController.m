@@ -11,10 +11,11 @@
 #import "NSString+EH.h"
 #import "EPMessagingManager.h"
 
-@interface EPMessageViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
+@interface EPMessageViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) UITableView *tableView;
-@property (weak, nonatomic) UITextField *messageField;
+//@property (weak, nonatomic) UITextField *messageField;
+@property (weak, nonatomic) UITextView *messageView;
 @property (weak, nonatomic) UIButton *sendButton;
 @property (strong, nonatomic) NSMutableArray *messages;
 @property (strong, nonatomic) NSMutableDictionary *tableDictionary;
@@ -29,6 +30,7 @@
 
 NSInteger const EPMessageViewHeight = 20.0880013;
 NSInteger const EPSendButtonWidth = 100;
+CGFloat const EPTextSize = 16.0;
 
 - (void)viewDidLoad
 {
@@ -41,7 +43,7 @@ NSInteger const EPSendButtonWidth = 100;
     [super viewDidAppear:animated];
     [self setupKeyBoardNotification];
     [self setupTableView];
-    [self setupMessageField];
+    [self setupMessageView];
     [self setupSendButton];
     [self setupAutoLayout];
     [self.tableView reloadData];
@@ -56,7 +58,7 @@ NSInteger const EPSendButtonWidth = 100;
 - (NSMutableArray *)dummyDataDictionary
 {
     NSMutableArray *dummy = [[NSMutableArray alloc] init];
-    NSArray *messages = @[@"cell1",@"cell2",@"cell3"];
+    NSArray *messages = @[@"cell1",@"cell2",@"cell3xxxxxxxxxxxxxxxxxxxxxxxxxxxxxyx"];
     NSArray *contacts = @[@"contact1",@"contact2",@"contact3"];
     
     for (NSInteger i = 0; i<messages.count; i++) {
@@ -79,20 +81,39 @@ NSInteger const EPSendButtonWidth = 100;
 
 }
 
-- (void)setupMessageField
+//- (void)setupMessageField
+//{
+//    CGRect messageViewFrame = CGRectMake(0,CGRectGetMaxY(self.tableView.frame),CGRectGetWidth(self.view.frame)-EPSendButtonWidth,EPMessageViewHeight);
+//    UITextField *textField = [[UITextField alloc] initWithFrame:messageViewFrame];
+//    textField.backgroundColor = [UIColor grayColor];
+//    textField.layer.cornerRadius = 0.0f;
+//    UIColor *color = [UIColor blackColor];
+//    textField.layer.borderColor = CGColorCreateCopyWithAlpha(color.CGColor, 1.0f);
+//    textField.layer.borderWidth = 3.0f;
+//    textField.textColor = [UIColor blackColor];
+//    textField.delegate = self;
+//    textField.clearButtonMode = YES;
+//    [self.view addSubview:textField];
+//    self.messageField = textField;
+//}
+
+- (void)setupMessageView
 {
     CGRect messageViewFrame = CGRectMake(0,CGRectGetMaxY(self.tableView.frame),CGRectGetWidth(self.view.frame)-EPSendButtonWidth,EPMessageViewHeight);
-    UITextField *textField = [[UITextField alloc] initWithFrame:messageViewFrame];
-    textField.backgroundColor = [UIColor grayColor];
-    textField.layer.cornerRadius = 0.0f;
+    UITextView *textView = [[UITextView alloc] initWithFrame:messageViewFrame];
+    textView.backgroundColor = [UIColor grayColor];
+    textView.layer.cornerRadius = 0.0f;
     UIColor *color = [UIColor blackColor];
-    textField.layer.borderColor = CGColorCreateCopyWithAlpha(color.CGColor, 1.0f);
-    textField.layer.borderWidth = 3.0f;
-    textField.textColor = [UIColor blackColor];
-    textField.delegate = self;
-    textField.clearButtonMode = YES;
-    [self.view addSubview:textField];
-    self.messageField = textField;
+    textView.layer.borderColor = CGColorCreateCopyWithAlpha(color.CGColor, 1.0f);
+    textView.layer.borderWidth = 1.0f;
+    textView.textColor = [UIColor blackColor];
+    textView.scrollEnabled = NO;
+    textView.textAlignment = NSTextAlignmentLeft;
+    textView.font = [UIFont systemFontOfSize:EPTextSize];
+    textView.textContainerInset = UIEdgeInsetsZero;
+
+    [self.view addSubview:textView];
+    self.messageView = textView;
 }
 
 - (void)setupSendButton
@@ -102,7 +123,7 @@ NSInteger const EPSendButtonWidth = 100;
     button.layer.cornerRadius = 0.0f;
     UIColor *color = [UIColor blackColor];
     button.layer.borderColor = CGColorCreateCopyWithAlpha(color.CGColor, 1.0f);
-    button.layer.borderWidth = 3.0f;
+    button.layer.borderWidth = 1.0f;
     [button setTitle:@"SEND" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     self.sendButton = button;
@@ -119,7 +140,7 @@ NSInteger const EPSendButtonWidth = 100;
     }
     
     self.messageFieldHeight =
-    [NSLayoutConstraint constraintWithItem:self.messageField
+    [NSLayoutConstraint constraintWithItem:self.messageView
                                  attribute:NSLayoutAttributeHeight
                                  relatedBy:NSLayoutRelationEqual
                                     toItem:nil
@@ -140,7 +161,7 @@ NSInteger const EPSendButtonWidth = 100;
     [self.view addConstraint:buttonWidth];
     
     NSLayoutConstraint *messageAndButtonHeights =
-    [NSLayoutConstraint constraintWithItem:self.messageField
+    [NSLayoutConstraint constraintWithItem:self.messageView
                                  attribute:NSLayoutAttributeHeight
                                  relatedBy:NSLayoutRelationEqual
                                     toItem:self.sendButton
@@ -151,7 +172,7 @@ NSInteger const EPSendButtonWidth = 100;
     [self.view addConstraint:messageAndButtonHeights];
     
     NSLayoutConstraint *messageAndButtonBottoms =
-    [NSLayoutConstraint constraintWithItem:self.messageField
+    [NSLayoutConstraint constraintWithItem:self.messageView
                                  attribute:NSLayoutAttributeBottom
                                  relatedBy:NSLayoutRelationEqual
                                     toItem:self.sendButton
@@ -161,7 +182,7 @@ NSInteger const EPSendButtonWidth = 100;
     
     [self.view addConstraint:messageAndButtonBottoms];
     
-    self.messageBottomPosition = [NSLayoutConstraint constraintWithItem:self.messageField
+    self.messageBottomPosition = [NSLayoutConstraint constraintWithItem:self.messageView
                                  attribute:NSLayoutAttributeBottom
                                  relatedBy:NSLayoutRelationEqual
                                     toItem:self.view
@@ -172,12 +193,12 @@ NSInteger const EPSendButtonWidth = 100;
     [self.view addConstraint:self.messageBottomPosition];
 
 
-    NSDictionary *constraintViews = NSDictionaryOfVariableBindings(_tableView, _messageField, _sendButton);
+    NSDictionary *constraintViews = NSDictionaryOfVariableBindings(_tableView, _messageView, _sendButton);
     
-    NSArray *messageAndButtonHorizontal = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_messageField][_sendButton]|" options:0 metrics:nil views:constraintViews];
+    NSArray *messageAndButtonHorizontal = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_messageView][_sendButton]|" options:0 metrics:nil views:constraintViews];
     [self.view addConstraints:messageAndButtonHorizontal];
     
-    NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_tableView][_messageField]" options:0 metrics:nil views:constraintViews];
+    NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_tableView][_messageView]" options:0 metrics:nil views:constraintViews];
     [self.view addConstraints:verticalConstraints];
     
     NSArray *horizontalTableViewConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_tableView]|" options:0 metrics:nil views:constraintViews];
@@ -193,7 +214,7 @@ NSInteger const EPSendButtonWidth = 100;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.messageField];
+                                             selector:@selector(textFieldDidChange:) name:UITextViewTextDidChangeNotification object:self.messageView];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
@@ -223,7 +244,13 @@ NSInteger const EPSendButtonWidth = 100;
 
 - (void)textFieldDidChange:(NSNotification *)notification
 {
-    self.messageFieldHeight.constant = [self heightForTextHavingWidth:CGRectGetWidth(self.messageField.frame) font:[UIFont systemFontOfSize:16] withMessage:self.messageField.text];
+    NSDictionary *attributes = @{@"font":[UIFont systemFontOfSize:EPTextSize]};
+    CGSize stringSize = [self.messageView.text sizeWithAttributes:attributes];
+    NSInteger numberOfLines = ceilf(stringSize.width/self.messageView.textContainer.size.width);
+    self.messageFieldHeight.constant = numberOfLines*stringSize.height+10;
+//    
+//    self.messageFieldHeight.constant = [self heightForTextHavingWidth:self.messageView.textContainer.size.width-11 font:[UIFont systemFontOfSize:EPTextSize] withMessage:self.messageView.text];
+    NSLog(@"Line Height %f",self.messageFieldHeight.constant);
 }
 
 #pragma mark - TableViewDelegate
@@ -253,20 +280,20 @@ NSInteger const EPSendButtonWidth = 100;
 {
     NSDictionary *message = self.messages[indexPath.row];
     NSString *messageString = [message allKeys][0];
-    return [self heightForTextHavingWidth:CGRectGetWidth(self.messageField.frame) font:[UIFont systemFontOfSize:16] withMessage:messageString];
+    return [self heightForTextHavingWidth:CGRectGetWidth(self.view.frame) font:[UIFont systemFontOfSize:EPTextSize] withMessage:messageString];
 }
 
 #pragma mark - IBActions
 
 -(IBAction)sendTapped:(id)sender
 {
-    if (self.messageField.text && ![self.messageField.text isEqualToString:@""]) {
-        [EPMessagingManager sendMessage:self.messageField.text];
+    if (self.messageView.text && ![self.messageView.text isEqualToString:@""]) {
+        [EPMessagingManager sendMessage:self.messageView.text];
     } else {
         UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Alert" message:@"Must Enter Message" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alertView show];
     }
-    [self.messageField resignFirstResponder];
+    [self.messageView resignFirstResponder];
 }
 
 #pragma mark - Private Methods
@@ -284,18 +311,6 @@ NSInteger const EPSendButtonWidth = 100;
         result = MAX(size.height, result);
     }
     return result;
-}
-
-#pragma mark - UITextFieldDelegate
-
--(BOOL)textFieldShouldClear:(UITextField *)textField
-{
-    return YES;
-}
-
--(void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    CGFloat textHeight = [self heightForTextHavingWidth:CGRectGetWidth(self.messageField.frame) font:[UIFont systemFontOfSize:16] withMessage:self.messageField.text];
 }
 
 @end
