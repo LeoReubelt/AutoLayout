@@ -8,7 +8,6 @@
 
 #import "EPMessageViewController.h"
 #import "EPMessageCell.h"
-#import "NSString+EH.h"
 #import "EPMessagingManager.h"
 
 @interface EPMessageViewController () <UITableViewDataSource, UITableViewDelegate>
