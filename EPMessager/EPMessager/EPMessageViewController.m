@@ -221,6 +221,7 @@ CGFloat const EPTextSize = 16.0;
 - (void)handleDeviceReoriented
 {
     self.cellTextWidth = CGRectGetWidth(self.view.frame)-30;
+    [self handleTextViewDidChange:nil];
     [self.tableView reloadData];
 }
 
@@ -231,9 +232,9 @@ CGFloat const EPTextSize = 16.0;
     CGRect rawFrame      = [value CGRectValue];
     CGRect keyboardFrame = [self.view convertRect:rawFrame fromView:nil];
     NSTimeInterval duration = [info[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    [UIView animateKeyframesWithDuration:duration delay:0 options:UIViewKeyframeAnimationOptionCalculationModeLinear animations:^{
+    
+    [UIView animateWithDuration:duration animations:^{
         self.messageBottomPosition.constant = -1*CGRectGetHeight(keyboardFrame);
-    } completion:^(BOOL finished) {
     }];
     [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
 }
@@ -242,9 +243,9 @@ CGFloat const EPTextSize = 16.0;
 {
     NSDictionary *info  = notification.userInfo;
     NSTimeInterval duration = [info[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    [UIView animateKeyframesWithDuration:duration delay:0 options:UIViewKeyframeAnimationOptionCalculationModeLinear animations:^{
+    
+    [UIView animateWithDuration:duration animations:^{
         self.messageBottomPosition.constant = 0;
-    } completion:^(BOOL finished) {
     }];
     [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
 }
