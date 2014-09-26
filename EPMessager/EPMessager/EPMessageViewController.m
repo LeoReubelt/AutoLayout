@@ -22,7 +22,7 @@
 
 //dummy data
 @property (strong, nonatomic) NSMutableArray *messages;
-@property (strong, nonatomic) NSMutableDictionary *tableDictionary;
+@property (strong, nonatomic) NSArray *contacts;
 
 @end
 
@@ -57,13 +57,15 @@ CGFloat const EPTextSize = 16.0;
 - (NSMutableArray *)dummyDataDictionary
 {
     NSMutableArray *dummy = [[NSMutableArray alloc] init];
-    NSArray *messages = @[@"cell1",@"cell2",@"cell3xxxxxxxxxxxxxxxxxxxxxxxxxxxxxyx"];
-    NSArray *contacts = @[@"contact1",@"contact2",@"contact3"];
+    NSArray *messages = @[@"cell1",@"cell2",@"cell3xxxxxxxxxxxxxxxxxxxxxxxxxxxxxyx",@"cell4",@"cell5"];
+    NSArray *contacts = @[@"contact1",@"contact2",@"contact3",@"contact2",@"contact3"];
+    self.contacts = contacts;
     
     for (NSInteger i = 0; i<messages.count; i++) {
         NSDictionary *message = @{messages[i]:contacts[i]};
         [dummy addObject:message];
     }
+    
     return dummy;
 }
 
@@ -271,12 +273,11 @@ CGFloat const EPTextSize = 16.0;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //EPMessageCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EMPessageCellIdentifier" forIndexPath:indexPath];
     EPMessageCell *cell = [[EPMessageCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EMPessageCellIdentifier"];
     NSDictionary *message = self.messages[indexPath.row];
     NSString *messageText = [message allKeys][0];
     cell.textLabel.text = messageText;
-    cell.backgroundColor = [UIColor redColor];
+    cell.backgroundColor = [self cellColorWithMessage:message Contacts:self.contacts];
     return cell;
 }
 
@@ -315,6 +316,22 @@ CGFloat const EPTextSize = 16.0;
         result = MAX(size.height, result);
     }
     return result;
+}
+
+- (UIColor*)cellColorWithMessage:(NSDictionary *)message Contacts:(NSArray *)contacts
+{
+    CGFloat index = 0;
+    for (NSString *contact in contacts) {
+        if ([contact isEqualToString:[message allValues][0]]) {
+            break;
+        }
+        index = index +1;
+    }
+    
+    CGFloat multiplier = index/contacts.count;
+    CGFloat colorValue = 0.5*multiplier+0.5;
+    UIColor *cellColor = [UIColor colorWithRed:colorValue green:colorValue blue:colorValue alpha:1];
+    return cellColor;
 }
 
 @end
