@@ -14,13 +14,15 @@
 @interface EPMessageViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) UITableView *tableView;
-//@property (weak, nonatomic) UITextField *messageField;
 @property (weak, nonatomic) UITextView *messageView;
 @property (weak, nonatomic) UIButton *sendButton;
+@property (strong, nonatomic) NSLayoutConstraint *messageViewHeight;
+@property (strong, nonatomic) NSLayoutConstraint *messageBottomPosition;
+@property (nonatomic) CGFloat cellTextWidth;
+
+//dummy data
 @property (strong, nonatomic) NSMutableArray *messages;
 @property (strong, nonatomic) NSMutableDictionary *tableDictionary;
-@property (strong, nonatomic) NSLayoutConstraint *messageFieldHeight;
-@property (strong, nonatomic) NSLayoutConstraint *messageBottomPosition;
 
 @end
 
@@ -35,19 +37,16 @@ CGFloat const EPTextSize = 16.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.messages = [self dummyDataDictionary];
-}
-
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self setupKeyBoardNotification];
+    self.cellTextWidth = CGRectGetWidth(self.view.frame)-30;
+    [self setupNotifications];
     [self setupTableView];
     [self setupMessageView];
     [self setupSendButton];
     [self setupAutoLayout];
     [self.tableView reloadData];
     self.automaticallyAdjustsScrollViewInsets = YES;
+    self.messages = [self dummyDataDictionary];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -74,28 +73,13 @@ CGFloat const EPTextSize = 16.0;
 {
     CGRect tableViewFrame = CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)-EPMessageViewHeight-CGRectGetMaxY(self.navigationController.navigationBar.frame));
     UITableView *tv = [[UITableView alloc] initWithFrame:tableViewFrame];
+    [tv registerClass:[EPMessageCell class] forCellReuseIdentifier:@"EMPessageCellIdentifier"];
     tv.delegate = self;
     tv.dataSource = self;
+    
     [self.view addSubview:tv];
     self.tableView = tv;
-
 }
-
-//- (void)setupMessageField
-//{
-//    CGRect messageViewFrame = CGRectMake(0,CGRectGetMaxY(self.tableView.frame),CGRectGetWidth(self.view.frame)-EPSendButtonWidth,EPMessageViewHeight);
-//    UITextField *textField = [[UITextField alloc] initWithFrame:messageViewFrame];
-//    textField.backgroundColor = [UIColor grayColor];
-//    textField.layer.cornerRadius = 0.0f;
-//    UIColor *color = [UIColor blackColor];
-//    textField.layer.borderColor = CGColorCreateCopyWithAlpha(color.CGColor, 1.0f);
-//    textField.layer.borderWidth = 3.0f;
-//    textField.textColor = [UIColor blackColor];
-//    textField.delegate = self;
-//    textField.clearButtonMode = YES;
-//    [self.view addSubview:textField];
-//    self.messageField = textField;
-//}
 
 - (void)setupMessageView
 {
@@ -126,8 +110,9 @@ CGFloat const EPTextSize = 16.0;
     button.layer.borderWidth = 1.0f;
     [button setTitle:@"SEND" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    
+    [self.view addSubview:button];
     self.sendButton = button;
-    [self.view addSubview:self.sendButton];
     [self.sendButton addTarget:self action:@selector(sendTapped:) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -139,7 +124,7 @@ CGFloat const EPTextSize = 16.0;
         view.translatesAutoresizingMaskIntoConstraints = NO;
     }
     
-    self.messageFieldHeight =
+    self.messageViewHeight =
     [NSLayoutConstraint constraintWithItem:self.messageView
                                  attribute:NSLayoutAttributeHeight
                                  relatedBy:NSLayoutRelationEqual
@@ -148,7 +133,7 @@ CGFloat const EPTextSize = 16.0;
                                 multiplier:1
                                   constant:EPMessageViewHeight];
     
-    [self.view addConstraint:self.messageFieldHeight];
+    [self.view addConstraint:self.messageViewHeight];
     
     NSLayoutConstraint *buttonWidth =
     [NSLayoutConstraint constraintWithItem:self.sendButton
@@ -192,32 +177,54 @@ CGFloat const EPTextSize = 16.0;
     
     [self.view addConstraint:self.messageBottomPosition];
 
-
     NSDictionary *constraintViews = NSDictionaryOfVariableBindings(_tableView, _messageView, _sendButton);
     
-    NSArray *messageAndButtonHorizontal = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_messageView][_sendButton]|" options:0 metrics:nil views:constraintViews];
+    NSArray *messageAndButtonHorizontal = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_messageView][_sendButton]|"
+                                                                                  options:0 metrics:nil views:constraintViews];
     [self.view addConstraints:messageAndButtonHorizontal];
     
-    NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_tableView][_messageView]" options:0 metrics:nil views:constraintViews];
+    NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_tableView][_messageView]"
+                                                                           options:0 metrics:nil views:constraintViews];
     [self.view addConstraints:verticalConstraints];
     
-    NSArray *horizontalTableViewConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_tableView]|" options:0 metrics:nil views:constraintViews];
+    NSArray *horizontalTableViewConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_tableView]|"
+                                                                                      options:0 metrics:nil views:constraintViews];
     [self.view addConstraints:horizontalTableViewConstraints];
 }
 
-#pragma mark - KeyBoard Reaction
+#pragma mark - Notifications for UIKeyBoard, UITextView, and Device Orientation
 
-- (void)setupKeyBoardNotification
+- (void)setupNotifications
 {
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+                                             selector:@selector(handleDeviceReoriented)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+                                             selector:@selector(handleKeyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(textFieldDidChange:) name:UITextViewTextDidChangeNotification object:self.messageView];
+                                             selector:@selector(handleKeyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleTextViewDidChange:)
+                                                 name:UITextViewTextDidChangeNotification
+                                               object:self.messageView];
 }
 
-- (void)keyboardWillShow:(NSNotification *)notification
+- (void)handleDeviceReoriented
+{
+    self.cellTextWidth = CGRectGetWidth(self.view.frame)-30;
+    [self.tableView reloadData];
+}
+
+- (void)handleKeyboardWillShow:(NSNotification *)notification
 {
     NSDictionary *info  = notification.userInfo;
     NSValue      *value = info[UIKeyboardFrameEndUserInfoKey];
@@ -231,7 +238,7 @@ CGFloat const EPTextSize = 16.0;
     [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
 }
 
-- (void)keyboardWillHide:(NSNotification *)notification
+- (void)handleKeyboardWillHide:(NSNotification *)notification
 {
     NSDictionary *info  = notification.userInfo;
     NSTimeInterval duration = [info[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
@@ -242,14 +249,11 @@ CGFloat const EPTextSize = 16.0;
     [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
 }
 
-- (void)textFieldDidChange:(NSNotification *)notification
+- (void)handleTextViewDidChange:(NSNotification *)notification
 {
-//    NSDictionary *attributes = @{@"font":[UIFont systemFontOfSize:EPTextSize]};
-//    CGSize stringSize = [self.messageView.text sizeWithAttributes:nil];
-//    NSInteger numberOfLines = ceilf(stringSize.width/self.messageView.textContainer.size.width);
-//    self.messageFieldHeight.constant = numberOfLines*(stringSize.height+10);
-    
-    self.messageFieldHeight.constant = [self heightForTextHavingWidth:self.messageView.textContainer.size.width-11 font:[UIFont systemFontOfSize:EPTextSize] withMessage:self.messageView.text];
+    self.messageViewHeight.constant = [self heightForTextHavingWidth:self.messageView.textContainer.size.width-11
+                                                                 font:[UIFont systemFontOfSize:EPTextSize]
+                                                          withMessage:self.messageView.text];
 }
 
 #pragma mark - TableViewDelegate
@@ -266,12 +270,12 @@ CGFloat const EPTextSize = 16.0;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    EPMessageCell *cell = [[EPMessageCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+    //EPMessageCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EMPessageCellIdentifier" forIndexPath:indexPath];
+    EPMessageCell *cell = [[EPMessageCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EMPessageCellIdentifier"];
     NSDictionary *message = self.messages[indexPath.row];
     NSString *messageText = [message allKeys][0];
     cell.textLabel.text = messageText;
     cell.backgroundColor = [UIColor redColor];
-
     return cell;
 }
 
@@ -279,7 +283,7 @@ CGFloat const EPTextSize = 16.0;
 {
     NSDictionary *message = self.messages[indexPath.row];
     NSString *messageString = [message allKeys][0];
-    return [self heightForTextHavingWidth:CGRectGetWidth(self.view.frame) font:[UIFont systemFontOfSize:EPTextSize] withMessage:messageString];
+    return [self heightForTextHavingWidth:self.cellTextWidth font:[UIFont systemFontOfSize:EPTextSize] withMessage:messageString];
 }
 
 #pragma mark - IBActions
